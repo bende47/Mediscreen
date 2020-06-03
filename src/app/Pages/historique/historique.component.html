@@ -1,0 +1,66 @@
+<div id="content">
+  <br/> <br/>
+  <ol class="breadcrumb">
+    <li><a routerLink="../accueil">Accueil</a></li>
+    <li><a routerLink="historique">Historiques </a></li>
+    <li class="active">Liste des historiques </li>
+  </ol>
+
+  <div style="padding-top: 0px; margin: 10px;">
+    <a (click)="initchamp()" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ajouter une note</a>
+
+    <div class="panel panel-default" style="margin-top: 20px;">
+      <div class="panel-heading">
+        Liste des historiques patients
+      </div>
+      <div class="panel-body">
+       
+         <div align="right">
+          <input type="text" (keyup)="doRefresh($event)"  placeholder="Rechercher" class="form-control" style="width: 20%">
+        </div>
+       
+
+        <div class="table-responsive" style="margin-top:5px">
+          <table id="tbl" name="tbl" class="table  table-hover table-striped table-bordered" data-toggle="table" data-show-filter="true"
+            data-sort-name="libelle" data-sort-order="asc" data-search="true" data-show-toggle="true" data-show-columns="true"
+            data-show-export="true" data-pagination="true">
+            <thead>
+              <tr>
+                <th data-field="libelle" data-sortable="true">Date</th>
+                <th data-field="libelle" data-sortable="true">Patient</th>
+                <th data-field="libelle" data-sortable="true">Observations</th>
+
+                <th data-field="actions" data-sortable="true">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of donnees | paginate: { itemsPerPage: 10, currentPage: p }">
+                <td style="width: 15%;">{{c.dateCreation | date:"dd-MM-yyyy HH:mm"}}</td>
+                <td>{{c.idPatient}}</td>
+                <td>{{c.notes}}</td>
+                
+                <td align="center" style="width: 15%;">
+                  <a (click)="initmodif(c)" data-toggle="modal" data-target="#myModal" title="Modifier le contact" class="glyphicon glyphicon-pencil btn btn-default"></a>&nbsp;
+                  <a (click)="delete(c)" title="Supprimer le contact" class="glyphicon glyphicon-trash btn btn-danger"></a>&nbsp;
+                </td>
+              </tr>
+
+              <tr *ngIf="x==0">
+                <td colspan="5" align="center">
+                  Aucun enregistrement trouvé
+                </td>
+              </tr>
+            </tbody>
+          </table>
+            <pagination-controls previousLabel="Précédent" nextLabel="Suivant"  class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>

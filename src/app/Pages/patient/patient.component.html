@@ -1,0 +1,147 @@
+<div id="content">
+  <br/> <br/>
+  <ol class="breadcrumb">
+    <li><a routerLink="../accueil">Accueil</a></li>
+    <li><a routerLink="patient">Patients</a></li>
+    <li class="active">Liste des patients</li>
+  </ol>
+
+  <div style="padding-top: 0px; margin: 10px;">
+    <a (click)="initchamp()" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ajouter un patient</a>
+
+    <div class="panel panel-default" style="margin-top: 20px;">
+      <div class="panel-heading">
+        Liste des patients
+      </div>
+      <div class="panel-body">
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog" style="width: 60%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" *ngIf="mod==1">AJOUTER UN PATIENT</h4>
+                <h4 class="modal-title" *ngIf="mod==2">MODIFIER UN PATIENT</h4>
+              </div>
+              <br/>
+              
+              <div class="fos_user_registration_register form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Nom *</label>
+                  <div class="col-sm-5">
+                    <input type="text" [(ngModel)]="patient.name" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="fos_user_registration_register form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Prénoms *</label>
+                  <div class="col-sm-5">
+                    <input type="text" [(ngModel)]="patient.firstname" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="fos_user_registration_register form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Sexe *</label>
+                  <div class="col-sm-5">
+                    <input type="radio" [(ngModel)]="patient.sex" value="M"> M
+                    <input type="radio" [(ngModel)]="patient.sex" value="F"> F
+                  </div>
+                </div>
+              </div>
+              <div class="fos_user_registration_register form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Date de naissance *</label>
+                  <div class="col-sm-5">
+                    <input type="date" [(ngModel)]="patient.birthday" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="fos_user_registration_register form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Adresse </label>
+                  <div class="col-sm-5">
+                    <input type="text" [(ngModel)]="patient.address" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="fos_user_registration_register form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Phone </label>
+                  <div class="col-sm-5">
+                    <input type="text" [(ngModel)]="patient.phone" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" [disabled]="!patient.name || !patient.firstname || !patient.sex || !patient.birthday " *ngIf="mod==1" (click)="addPatient()" id="valider" data-dismiss="modal">AJOUTER</button>
+                <button class="btn btn-primary" [disabled]="!patient.name || !patient.firstname || !patient.sex || !patient.birthday " *ngIf="mod==2" (click)="editPatient(idpatient)" id="valider" data-dismiss="modal">MODIFIER</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ANNULER</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- <div  class="col-md-4">
+            <button class="btn btn-default" printSectionId="print-section" ngxPrint><i class="glyphicon glyphicon-print"></i> Imprimer pdf</button>
+          </div> -->
+          <div align="right" class="col-md-12">
+            <input type="text" (keyup)="doRefresh($event)" placeholder="Rechercher" class="form-control" style="width: 20%">
+          </div>
+        </div>
+
+        <div class="table-responsive" style="margin-top:5px">
+          <div id="print-section">
+            <table name="tbl" class="table  table-hover table-striped table-bordered" data-toggle="table" data-show-filter="true" data-sort-name="libelle"
+              data-sort-order="asc" data-search="true" data-show-toggle="true" data-show-columns="true" data-show-export="true"
+              data-pagination="true">
+              <thead>
+                <tr>
+                  <th data-field="libelle" data-sortable="true">Nom et prénoms</th>
+                  <th data-field="actions" data-sortable="true">Sexe</th>
+                  <th data-field="actions" data-sortable="true">Date de naissance</th>
+                  <th data-field="actions" data-sortable="true">Adresse</th>
+                  <th data-field="actions" data-sortable="true">Téléphone</th>
+                  <th data-field="actions" data-sortable="true">Actions</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of donnees | paginate: { itemsPerPage: 10, currentPage: p }">
+                  <td>{{d.name}} {{d.firstname}}</td>
+                  <td>{{d.sex}}</td>
+                  <td>{{d.birthday | date:'dd-MM-yyyy'}}</td>
+                  <td>{{d.address}}</td>
+                  <td>{{d.phone}}</td>
+                  <td align="center">
+                    <a (click)="detailhistorique(d.id)"  title="Consulter historique patient"
+                      class="glyphicon glyphicon-th-list btn btn-default">
+                    </a>&nbsp;
+                    <a (click)="initmodif(d.id)" data-toggle="modal" data-target="#myModal" title="Modifier les infos patient" class="glyphicon glyphicon-pencil btn btn-success"></a>&nbsp;
+                    <!-- <a (click)="delete(d.id)" title="Supprimer le groupe" class="glyphicon glyphicon-trash btn btn-danger"></a>&nbsp; -->
+                  </td>
+                </tr>
+
+                <tr *ngIf="x==0">
+                  <td colspan="6" align="center">
+                    Aucun enregistrement trouvé
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls previousLabel="Précédent" nextLabel="Suivant" class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>

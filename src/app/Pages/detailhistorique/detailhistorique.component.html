@@ -1,0 +1,133 @@
+<div id="content">
+  <br/> <br/>
+  <ol class="breadcrumb">
+    <li><a routerLink="../accueil">Accueil</a></li>
+    <li><a routerLink="../../patient">Patients</a></li>
+    <li class="active">Historiques</li>
+  </ol>
+
+  <div style="padding-top: 0px; margin: 10px;">
+    <a (click)="initchamp()" class="btn btn-default" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span> &nbsp;Ajouter une note</a>&nbsp;&nbsp;
+    <a (click)="rapport(patient)" class="btn btn-success"> <span class="glyphicon glyphicon-folder-open"></span> &nbsp;Rapport</a>
+
+    <div class="panel panel-default" style="margin-top: 20px;">
+      <div class="panel-heading">
+        Liste des notes
+      </div>
+      <div class="panel-body">
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog" style="width: 60%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" *ngIf="mod==1">AJOUTER UNE NOTE</h4>
+                <h4 class="modal-title" *ngIf="mod==2">MODIFIER UNE NOTE</h4>
+              </div>
+              <br/>
+             
+              <div class="fos_user_registration_register form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">NOTES *</label>
+                  <div class="col-sm-9">
+                    <textarea  class="form-control" [(ngModel)]="history.notes" id="" cols="40" rows="10"></textarea>
+                  </div>
+                </div>
+              </div>            
+             
+              <div class="modal-footer">
+                <button class="btn btn-primary" [disabled]="!history.notes" *ngIf="mod==1" (click)="addHistory()" id="valider" data-dismiss="modal">AJOUTER</button>
+                <button class="btn btn-primary" [disabled]="!history.notes" *ngIf="mod==2" (click)="editHistory(idhistory)" id="valider" data-dismiss="modal">MODIFIER</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ANNULER</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row " style="padding: 15px;">
+          <table style="width: 100%" >
+
+            <tr valign="top">
+              <td style="width: 12%"><label class="control-label">Nom et prénoms : </label></td>
+              <td>{{name}} {{firstname}}</td>
+              <td rowspan="4"></td>
+            </tr>
+            <tr valign="top">
+              <td><label class="control-label">Date : </label></td>
+              <td>{{birthday|date:'dd-MM-yyyy'}} </td>
+            </tr>
+            <tr valign="top">
+              <td><label class="control-label">Téléphone : </label></td>
+              <td>
+                {{phone}}
+              </td>
+            </tr>
+            <tr valign="top">
+              <td><label class="control-label">Adresse : </label></td>
+              <td colspan="2">
+                {{address}}
+              </td>
+            </tr>
+            <tr valign="top" >
+              <td><label class="control-label" >Niveau de risque : </label></td>
+              <td colspan="2" style="font-weight: bold;color:green;"  *ngIf="risque=='Aucun risque'">
+                {{risque}}
+              </td>
+              <td colspan="2" style="font-weight: bold;color:red;"  *ngIf="risque!='Aucun risque'">
+                {{risque}}
+              </td>
+            </tr>
+          </table>
+
+          <!-- <div  class="col-md-4">
+            <button class="btn btn-default" printSectionId="print-section" ngxPrint><i class="glyphicon glyphicon-print"></i> Imprimer pdf</button>
+          </div> -->
+          <div align="right" class="col-md-12">
+            <input type="text" (keyup)="doRefresh($event)" placeholder="Rechercher" class="form-control" style="width: 20%">
+          </div>
+        </div>
+
+        <div class="table-responsive" style="margin-top:5px">
+          <div id="print-section">
+            <table name="tbl" class="table  table-hover table-striped table-bordered" data-toggle="table" data-show-filter="true" data-sort-name="libelle"
+              data-sort-order="asc" data-search="true" data-show-toggle="true" data-show-columns="true" data-show-export="true"
+              data-pagination="true">
+              <thead>
+                <tr>
+                  <th data-field="libelle" data-sortable="true">Date enreg.</th>
+                  <th data-field="actions" data-sortable="true">Observations/notes</th>
+                  <th data-field="actions" data-sortable="true">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of donnees | paginate: { itemsPerPage: 10, currentPage: p }">                
+                  <td style="width: 15%;">{{d.dateCreation | date:'dd-MM-yyyy HH:mm'}}</td>
+                  <td>{{d.notes}}</td>
+                  <td align="center" style="width: 15%;">
+                   
+                    <a (click)="initmodif(d.id)" data-toggle="modal" data-target="#myModal" title="Modifier les infos patient" class="glyphicon glyphicon-pencil btn btn-success"></a>&nbsp;
+                    <!-- <a (click)="delete(d.id)" title="Supprimer le groupe" class="glyphicon glyphicon-trash btn btn-danger"></a>&nbsp; -->
+                  </td>
+                </tr>
+
+                <tr *ngIf="x==0">
+                  <td colspan="4" align="center">
+                    Aucun enregistrement trouvé
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls previousLabel="Précédent" nextLabel="Suivant" class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>

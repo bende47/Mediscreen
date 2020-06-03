@@ -1,0 +1,36 @@
+<br/><br/><br/><br/>
+
+<div class="container login-container">
+  <div class="row">
+    <div class="col-md-6 ads " >
+      <span >MEDISCREEN</span>
+      <img src="assets/images/sms1.PNG" width="100%;" style="margin-top: 50px;" />
+    </div>
+    <div class="col-md-6 login-form">
+      <div class="profile-img">
+        <img src="assets/images/logo.png" width="40%;" />
+      </div>
+      <h4>Connectez vous !</h4>
+      <div>
+        <div class="form-group">
+          <input type="text" class="form-control" [(ngModel)]="login" placeholder="Login">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" [(ngModel)]="password" placeholder="Mot de passe">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary btn-lg btn-block" [disabled]="!login || !password"  (click)="connexion()">Connexion</button>
+
+        </div>
+        <div class="form-group forget-password">
+          <a  routerLink="/reinitpwd">Mot de passe oublié ?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="width:100%; background-color: #E0E0E0; color: #000; font-weight: bold; padding:10px; position:fixed; bottom:0px;font-family:  Raleway"
+  align="center">
+  Copyright © 2020 Justin Bende - Design & développement
+</div>
